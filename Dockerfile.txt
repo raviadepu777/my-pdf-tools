@@ -7,14 +7,14 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json (if it exists)
 COPY package*.json ./
 
-# Install all dependencies, including development ones if needed
+# Install all dependencies
 RUN npm install
 
 
 # ==> STAGE 2: Create the final, lean production image <==
 FROM node:18-slim
 
-# Install LibreOffice - our main system dependency
+# Install LibreOffice
 RUN apt-get update && apt-get install -y \
     libreoffice \
     --no-install-recommends \
@@ -30,8 +30,9 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 # Copy the application source code
 COPY . .
 
-# Expose the port our app will run on
-EXPOSE 3000
-
-# The command to start the server
-CMD ["node", "server.js"]
+# --------------------------------------------------------------------
+# !!! TEMPORARY DIAGNOSTIC COMMANDS !!!
+# Instead of starting the server, we will list the files to see what exists.
+# This will help us debug the "Cannot find module" error.
+# --------------------------------------------------------------------
+CMD ["/bin/bash", "-c", "echo '--- Listing files in /usr/src/app ---' && ls -la && echo '--- End of file list ---' && sleep 300"]
