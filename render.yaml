@@ -1,0 +1,21 @@
+services: 
+  - type: web
+    name: 1pdfword-app
+    # This forces Render to use the native Node.js environment
+    env: node
+    # Start on the free plan
+    plan: free
+    # --- Build and Start Commands ---
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    # --- Environment Settings ---
+    # This is where we add the system packages
+    envVars:
+      - key: LD_LIBRARY_PATH
+        value: /usr/lib/libreoffice/program
+      - key: FONTCONFIG_PATH
+        value: /etc/fonts
+    # This is the correct section for system package definitions in a blueprint
+    systemPackages:
+      - name: libreoffice
+      - name: fontconfig
