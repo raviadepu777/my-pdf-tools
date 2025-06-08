@@ -10,7 +10,6 @@ COPY package*.json ./
 # Install all dependencies
 RUN npm install
 
-
 # ==> STAGE 2: Create the final, lean production image <==
 FROM node:18-slim
 
@@ -30,9 +29,8 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 # Copy the application source code
 COPY . .
 
-# --------------------------------------------------------------------
-# !!! TEMPORARY DIAGNOSTIC COMMANDS !!!
-# Instead of starting the server, we will list the files to see what exists.
-# This will help us debug the "Cannot find module" error.
-# --------------------------------------------------------------------
-CMD ["/bin/bash", "-c", "echo '--- Listing files in /usr/src/app ---' && ls -la && echo '--- End of file list ---' && sleep 300"]
+# Expose the port our app will run on
+EXPOSE 3000
+
+# This command is just a fallback; Render will override it.
+CMD ["node", "server.js"]
