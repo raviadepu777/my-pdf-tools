@@ -13,9 +13,8 @@ const convertAsync = promisify(libre.convert);
 
 app.use(cors());
 
-// Serve static files from the 'public' directory
-// We will create this directory in our Dockerfile
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files like index.html from the root directory
+app.use(express.static(__dirname));
 
 const uploadsDir = './uploads';
 if (!fs.existsSync(uploadsDir)){
@@ -56,7 +55,7 @@ app.post('/convert', upload.single('file'), async (req, res) => {
 
 // A catch-all to serve index.html for any other GET request
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(port, () => {
